@@ -1,15 +1,16 @@
+oprość grafike, niech będzie coś typu windows 10 albo windows 9
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Calculator</title>
+  <title></title>
   <script>
     if (sessionStorage.getItem("puzzle1_solved") !== "true") {
       window.location.replace("index.html");
     }
   </script>
-  <link href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after {
       box-sizing: border-box;
@@ -18,160 +19,79 @@
     }
     html, body {
       height: 100%;
-      background: linear-gradient(135deg, #1a5fb4 0%, #2a7fd4 50%, #1a5fb4 100%);
-      color: #1b1b1b;
-      font-family: "Segoe UI", "Courier Prime", Tahoma, sans-serif;
+      background: #080808;
+      color: #e8e8e0;
+      font-family: 'Courier Prime', monospace;
       display: flex;
       align-items: center;
       justify-content: center;
       overflow: hidden;
     }
-
-    /* fałszywe okno w stylu Windows 10 */
-    .window {
-      width: min(92vw, 560px);
-      background: #f3f3f3;
-      border-radius: 8px;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.45);
-      overflow: hidden;
-      animation: fadeIn 0.6s ease both;
-    }
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(14px) scale(0.98); }
-      to   { opacity: 1; transform: translateY(0) scale(1); }
-    }
-
-    .titlebar {
-      background: #ffffff;
-      border-bottom: 1px solid #e1e1e1;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 0 0 14px;
-      height: 32px;
-      font-size: 12px;
-      color: #333;
-      user-select: none;
-    }
-    .titlebar .app-title {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    .titlebar .app-title::before {
-      content: "";
-      width: 14px;
-      height: 14px;
-      background: #0078d7;
-      border-radius: 2px;
-      display: inline-block;
-    }
-    .win-controls {
-      display: flex;
-      height: 100%;
-    }
-    .win-controls span {
-      width: 46px;
-      height: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-family: "Segoe UI Symbol", sans-serif;
-      font-size: 10px;
-      color: #333;
-      cursor: default;
-    }
-    .win-controls span:hover {
-      background: #e5e5e5;
-    }
-    .win-controls span.close:hover {
-      background: #e81123;
-      color: #fff;
-    }
-
-    .content {
-      padding: 40px 36px 44px;
+    .center {
       display: flex;
       flex-direction: column;
-      gap: 26px;
-      background: #fbfbfb;
+      align-items: flex-start;
+      gap: 24px;
+      animation: fadeIn 1s ease both;
     }
-
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
     .equation-row {
       display: flex;
       align-items: center;
-      gap: 14px;
+      gap: 16px;
       font-family: 'Courier Prime', monospace;
-      font-size: clamp(1.5rem, 4vw, 2.2rem);
+      font-size: clamp(2rem, 5vw, 3.2rem);
       font-weight: 700;
-      color: #1b1b1b;
+      color: #e8e8e0;
       white-space: nowrap;
     }
-
     input[type="text"] {
-      background: #ffffff;
-      border: 1px solid #b0b0b0;
-      border-radius: 2px;
+      background: transparent;
+      border: 1px solid #444;
+      border-radius: 10px;
       outline: none;
-      color: #1b1b1b;
-      font-family: 'Courier Prime', monospace;
-      font-size: clamp(1rem, 2.5vw, 1.2rem);
+      color: #e8e8e0;
+      font-family: monospace;
+      font-size: clamp(1rem, 2.5vw, 1.3rem);
       font-weight: 400;
-      letter-spacing: 0.15em;
+      letter-spacing: 0.2em;
       text-align: center;
       width: clamp(80px, 12vw, 120px);
-      padding: 10px 14px;
-      caret-color: #0078d7;
-      transition: border-color 0.2s, box-shadow 0.2s;
+      padding: 10px 16px;
+      caret-color: #e8e8e0;
+      transition: border-color 0.3s;
     }
     input[type="text"]:focus {
-      border-color: #0078d7;
-      box-shadow: 0 0 0 1px #0078d7;
+      border-color: #888;
     }
     input[type="text"]::placeholder {
-      color: #b5b5b5;
+      color: #333;
       letter-spacing: 0.1em;
     }
-
-    .statusbar {
-      border-top: 1px solid #e1e1e1;
-      padding: 8px 16px;
-      font-size: 11px;
-      color: #767676;
-      background: #f3f3f3;
-    }
-
-    .window.glitch {
-      animation: glitch-content 0.1s steps(1) forwards;
-    }
-    @keyframes glitch-content {
-      0%   { transform: translate(-8px, 2px);  filter: invert(1) brightness(3); }
-      33%  { transform: translate(6px, -4px);  filter: hue-rotate(180deg); }
-      66%  { transform: translate(-4px, 6px);  filter: invert(1); }
-      100% { transform: translate(0, 0);       filter: none; }
+  .center.glitch {
+    animation: glitch-content 0.1s steps(1) forwards;
+  }
+  @keyframes glitch-content {
+    0%   { transform: translate(-8px, 2px);  filter: invert(1) brightness(3); }
+    33%  { transform: translate(6px, -4px);  filter: hue-rotate(180deg); }
+    66%  { transform: translate(-4px, 6px);  filter: invert(1); }
+    100% { transform: translate(0, 0);       filter: none; }
+  }
     }
   </style>
 </head>
 <body>
-  <div class="window" id="center">
-    <div class="titlebar">
-      <div class="app-title">Calculator</div>
-      <div class="win-controls">
-        <span>&#8211;</span>
-        <span>&#9633;</span>
-        <span class="close">&#10005;</span>
-      </div>
+  <div class="center" id="center">
+    <div class="equation-row">
+      <span>73 / 65 = 37</span>
     </div>
-    <div class="content">
-      <div class="equation-row">
-        <span>73 / 65 = 37</span>
-      </div>
-      <div class="equation-row">
-        <span>95 / 16 =</span>
-        <input type="text" id="answer" placeholder="..." autocomplete="off" spellcheck="false" />
-      </div>
+    <div class="equation-row">
+      <span>95 / 16 =</span>
+      <input type="text" id="answer" placeholder="..." autocomplete="off" spellcheck="false" />
     </div>
-    <div class="statusbar">Standard</div>
   </div>
   <script>
     const input  = document.getElementById("answer");
