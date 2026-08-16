@@ -1,5 +1,154 @@
-<script>
-  if (sessionStorage.getItem("puzzle2_solved") !== "true") {
-    window.location.replace("index.html");
-  }
-</script>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title></title>
+  <script>
+    if (sessionStorage.getItem("puzzle2_solved") !== "true") {
+      window.location.replace("index.html");
+    }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    html, body {
+      height: 100%;
+      background: #080808;
+      color: #e8e8e0;
+      font-family: 'Courier Prime', monospace;
+      overflow: hidden;
+    }
+    #bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      white-space: pre;
+      font-family: 'Courier Prime', monospace;
+      font-size: 14px;
+      line-height: 18px;
+      letter-spacing: 2px;
+      color: #2a2a26;
+      user-select: none;
+      pointer-events: none;
+      overflow: hidden;
+    }
+    .center {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      animation: fadeIn 1s ease both;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    input[type="text"] {
+      background: #080808;
+      border: 1px solid #444;
+      border-radius: 10px;
+      outline: none;
+      color: #e8e8e0;
+      font-family: 'Courier Prime', monospace;
+      font-size: clamp(1rem, 2vw, 1.25rem);
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-align: center;
+      width: clamp(180px, 32vw, 300px);
+      padding: 14px 20px;
+      caret-color: #e8e8e0;
+      transition: border-color 0.3s;
+    }
+    input[type="text"]:focus {
+      border-color: #888;
+    }
+    input[type="text"]::placeholder {
+      color: #333;
+      letter-spacing: 0.1em;
+    }
+  </style>
+</head>
+<body>
+  <pre id="bg"></pre>
+  <div class="center" id="container">
+    <input type="text" id="answer" placeholder="..." autocomplete="off" spellcheck="false" />
+  </div>
+  <script>
+    // ---- fixed block, unchanged, top-left corner ----
+    const fixedLines = [
+      "40005270008300002210007900000500001",
+      "04990605320504150504350506267904340",
+      "08529501550904770507834505121805990",
+      "08634200000700004805367600009400006",
+      "02145402630508011602561605637205048",
+      "05350703610601803606520804742101103",
+      "30001908460102950740008400000408780"
+    ];
+
+    function randomDigit() {
+      return Math.floor(Math.random() * 10).toString();
+    }
+
+    function buildBackground() {
+      const charW = 16;   // approx width incl. letter-spacing
+      const lineH = 18;   // matches line-height
+      const cols = Math.max(37, Math.ceil(window.innerWidth / charW) + 2);
+      const rows = Math.max(fixedLines.length, Math.ceil(window.innerHeight / lineH) + 2);
+
+      const grid = [];
+      for (let r = 0; r < rows; r++) {
+        let row = "";
+        for (let c = 0; c < cols; c++) {
+          row += randomDigit();
+        }
+        if (r < fixedLines.length) {
+          const fixed = fixedLines[r];
+          row = fixed + row.slice(fixed.length);
+        }
+        grid.push(row);
+      }
+      document.getElementById("bg").textContent = grid.join("\n");
+    }
+
+    buildBackground();
+
+    // ---- puzzle logic ----
+    const input = document.getElementById("answer");
+    const container = document.getElementById("container");
+    input.addEventListener("input", () => {
+      input.value = input.value.replace(/[^a-zA-Z]/g, "");
+    });
+    const _h3 = "SUtYSU9Y";
+    const _k = 42;
+    function _d(s) {
+      return atob(s).split("").map(c => String.fromCharCode(c.charCodeAt(0) ^ _k)).join("");
+    }
+    input.addEventListener("keydown", e => {
+      if (e.key === "Enter") {
+        if (input.value.toLowerCase() === _d(_h3)) {
+          sessionStorage.setItem("puzzle3_solved", "true");
+          window.location.href = "quattuor.html";
+        }
+        return;
+      }
+      if (
+        !/^[a-zA-Z]$/.test(e.key) &&
+        !["Backspace","Delete","ArrowLeft","ArrowRight","Tab"].includes(e.key)
+      ) {
+        e.preventDefault();
+      }
+    });
+  </script>
+</body>
+</html>
