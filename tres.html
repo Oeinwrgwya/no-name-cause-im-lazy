@@ -34,7 +34,7 @@
       font-size: 14px;
       line-height: 18px;
       letter-spacing: 2px;
-      color: #2a2a26;
+      color: #080808;
       user-select: none;
       pointer-events: none;
       overflow: hidden;
@@ -100,9 +100,24 @@
       return Math.floor(Math.random() * 10).toString();
     }
 
+    function measureCharWidth() {
+      const bg = document.getElementById("bg");
+      const probe = document.createElement("span");
+      probe.style.visibility = "hidden";
+      probe.style.position = "absolute";
+      probe.style.whiteSpace = "pre";
+      probe.style.font = getComputedStyle(bg).font;
+      probe.style.letterSpacing = getComputedStyle(bg).letterSpacing;
+      probe.textContent = "0000000000";
+      document.body.appendChild(probe);
+      const width = probe.getBoundingClientRect().width / 10;
+      document.body.removeChild(probe);
+      return width;
+    }
+
     function buildBackground() {
-      const charW = 16;   // approx width incl. letter-spacing
-      const lineH = 18;   // matches line-height
+      const charW = measureCharWidth();
+      const lineH = 18; // matches line-height
       const cols = Math.max(37, Math.ceil(window.innerWidth / charW) + 2);
       const rows = Math.max(fixedLines.length, Math.ceil(window.innerHeight / lineH) + 2);
 
@@ -121,7 +136,12 @@
       document.getElementById("bg").textContent = grid.join("\n");
     }
 
-    buildBackground();
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(buildBackground);
+    } else {
+      buildBackground();
+    }
+    window.addEventListener("resize", buildBackground);
 
     // ---- puzzle logic ----
     const input = document.getElementById("answer");
